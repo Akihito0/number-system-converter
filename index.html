@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Number System Converter</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <main class="app-container">
+
+        <header class="header-container">
+            <h1>Number System Converter</h1>
+            <p>Convert numbers between different number systems.</p>
+        </header>
+
+        <section class="controls-container">
+
+            <div class="control-group">
+                <label for="inputCount">
+                    Number of input boxes:
+                </label>
+
+                <input
+                    type="number"
+                    id="inputCount"
+                    min="3"
+                    max="10"
+                    value="3"
+                >
+            </div>
+
+            <button id="setInputsButton" type="button">
+                Set Input Boxes
+            </button>
+
+        </section>
+
+        <section
+            id="inputsContainer"
+            class="inputs-container">
+        </section>
+
+    </main>
+
+    <script type="module" src="./script.js"></script>
+</body>
+</html>
