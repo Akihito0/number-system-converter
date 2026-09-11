@@ -17,7 +17,7 @@
             <p>Convert numbers between different number systems.</p>
         </header>
 
-        <section class="controls-container">
+        <section class="controls-container" id="controlsContainer">
 
             <div class="control-group">
                 <label for="inputCount">
@@ -37,6 +37,75 @@
                 Set Input Boxes
             </button>
 
+        </section>
+
+        <section class="expression-container" id="expressionContainer">
+
+            <div class="expression-header">
+                <h2>Arithmetic Expression</h2>
+                <p>Build expressions with variables, operators, and parentheses: e.g. (A + B - C) * D</p>
+            </div>
+
+            <div class="expression-toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Variables:</span>
+                    <div id="variableButtons" class="btn-group"></div>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Operators:</span>
+                    <div class="btn-group">
+                        <button type="button" class="btn-expr" data-insert="+">+</button>
+                        <button type="button" class="btn-expr" data-insert="-">−</button>
+                        <button type="button" class="btn-expr" data-insert="*">×</button>
+                        <button type="button" class="btn-expr" data-insert="/">÷</button>
+                        <button type="button" class="btn-expr" data-insert="^">^</button>
+                        <button type="button" class="btn-expr" data-insert="(">(</button>
+                        <button type="button" class="btn-expr" data-insert=")">)</button>
+                        <button type="button" class="btn-expr btn-clear" id="clearExpressionButton">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expression-input-row">
+                <label for="expressionInput">Enter Expression:</label>
+                <input
+                    type="text"
+                    id="expressionInput"
+                    placeholder="e.g. (A + B - C) * D"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+
+            <div class="expression-action-row">
+                <div class="control-group">
+                    <label>Result number system:</label>
+                    <div class="base-btn-group" id="resultBaseButtonGroup" role="group" aria-label="Result number system">
+                        <button type="button" class="btn-base active" data-base="10">10 <span class="base-tag">Dec</span></button>
+                        <button type="button" class="btn-base" data-base="2">2 <span class="base-tag">Bin</span></button>
+                        <button type="button" class="btn-base" data-base="8">8 <span class="base-tag">Oct</span></button>
+                        <button type="button" class="btn-base" data-base="16">16 <span class="base-tag">Hex</span></button>
+                    </div>
+                    <select id="resultSystemSelect" hidden>
+                        <option value="10" selected>Decimal (Base 10)</option>
+                        <option value="2">Binary (Base 2)</option>
+                        <option value="8">Octal (Base 8)</option>
+                        <option value="16">Hexadecimal (Base 16)</option>
+                    </select>
+                </div>
+
+                <button id="performArithmeticButton" type="button">
+                    Perform Arithmetic Operation
+                </button>
+            </div>
+
+        </section>
+
+        <section
+            id="arithmeticResultContainer"
+            class="arithmetic-result-container"
+            hidden>
         </section>
 
         <section
