@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>1's and 2's Complement for Number Systems</title>
+
+    <link rel="stylesheet" href="./complement.css">
+</head>
+<body>
+
+    <main class="app-container">
+
+        <header class="header-container">
+            <h1>1's and 2's Complement for Number Systems</h1>
+            <p>Compute complements and perform subtraction using complement methods.</p>
+            <a href="../index.html" class="header-nav-link">
+                <span class="nav-arrow">←</span> Back to Number System Converter
+            </a>
+        </header>
+
+        <nav class="tab-bar" id="tabBar">
+            <button type="button" class="tab-btn active" data-tab="complements">
+                Complements
+            </button>
+            <button type="button" class="tab-btn" data-tab="subtraction">
+                Subtraction via Complements
+            </button>
+        </nav>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- TAB 1: COMPLEMENTS -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="tab-panel active" id="panel-complements">
+
+            <section class="controls-container">
+                <div class="control-group">
+                    <label for="complementInputCount">
+                        Number of input boxes:
+                    </label>
+                    <input
+                        type="number"
+                        id="complementInputCount"
+                        min="1"
+                        max="10"
+                        value="3"
+                    >
+                </div>
+
+                <button id="complementSetInputsButton" type="button">
+                    Set Input Boxes
+                </button>
+            </section>
+
+            <section
+                id="complementInputsContainer"
+                class="inputs-container">
+            </section>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- TAB 2: SUBTRACTION VIA COMPLEMENTS -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="tab-panel" id="panel-subtraction">
+
+            <section class="controls-container subtraction-controls">
+                <div class="control-group">
+                    <label>Number system:</label>
+                    <div class="base-btn-group" id="subBaseButtonGroup" role="group" aria-label="Subtraction number system">
+                        <button type="button" class="btn-base" data-base="10">10 <span class="base-tag">Dec</span></button>
+                        <button type="button" class="btn-base active" data-base="2">2 <span class="base-tag">Bin</span></button>
+                        <button type="button" class="btn-base" data-base="8">8 <span class="base-tag">Oct</span></button>
+                        <button type="button" class="btn-base" data-base="16">16 <span class="base-tag">Hex</span></button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="subDigitWidth">Working word length (bits):</label>
+                    <input
+                        type="number"
+                        id="subDigitWidth"
+                        min="1"
+                        max="32"
+                        value="8"
+                    >
+                </div>
+            </section>
+
+            <section class="subtraction-input-section">
+                <div class="subtraction-field">
+                    <label for="subMinuend" class="subtraction-label">
+                        <span class="sub-label-badge">A</span>
+                        Minuend (the number being subtracted from):
+                    </label>
+                    <input
+                        type="text"
+                        id="subMinuend"
+                        class="number-input"
+                        placeholder="Enter Minuend A (Base 2)"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <p class="validation-message" id="subMinuendValidation"></p>
+                </div>
+
+                <div class="subtraction-operator">−</div>
+
+                <div class="subtraction-field">
+                    <label for="subSubtrahend" class="subtraction-label">
+                        <span class="sub-label-badge">B</span>
+                        Subtrahend (the number being subtracted):
+                    </label>
+                    <input
+                        type="text"
+                        id="subSubtrahend"
+                        class="number-input"
+                        placeholder="Enter Subtrahend B (Base 2)"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <p class="validation-message" id="subSubtrahendValidation"></p>
+                </div>
+
+                <button id="performSubtractionButton" type="button">
+                    Perform Subtraction
+                </button>
+            </section>
+
+            <section
+                id="subtractionResultContainer"
+                class="subtraction-result-container"
+                hidden>
+            </section>
+
+        </div>
+
+    </main>
+
+    <script type="module" src="./complement-ui.js"></script>
+</body>
+</html>

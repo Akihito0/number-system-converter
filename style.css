@@ -39,7 +39,29 @@ body {
 }
 
 .header-container p {
-    margin: 0;
+    margin: 0 0 14px;
+}
+
+.header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 24px;
+    background-color: #9CD5FF;
+    color: #355872;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid #9CD5FF;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header-nav-link:hover {
+    background-color: #F7F8F0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .controls-container {
