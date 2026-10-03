@@ -299,6 +299,37 @@ export function addBCD(aStr, bStr) {
 }
 
 /**
+ * Computes the 9's complement of a decimal digit string.
+ * Subtracts each decimal digit from 9.
+ *
+ * @param {string} decimalStr - String of decimal digits
+ * @returns {string} - 9's complement string
+ */
+export function ninesComplement(decimalStr) {
+    const digits = [];
+    for (const ch of decimalStr) {
+        digits.push(9 - Number(ch));
+    }
+    return digits.join("");
+}
+
+/**
+ * Computes the 10's complement of a decimal digit string.
+ * Adds 1 to the 9's complement using BCD addition rules.
+ *
+ * @param {string} decimalStr - String of decimal digits
+ * @returns {string} - 10's complement string of equal length
+ */
+export function tensComplement(decimalStr) {
+    const len = decimalStr.length;
+    const nines = ninesComplement(decimalStr);
+    const one = "1".padStart(len, "0");
+    const res = addBCD(nines, one);
+    const padded = res.decimalResult.padStart(len, "0");
+    return padded.length > len ? padded.slice(padded.length - len) : padded;
+}
+
+/**
  * Subtracts two decimal digit strings using 9's complement method.
  * Returns step-by-step solution.
  */
@@ -309,11 +340,8 @@ export function subtractBCDUsing9sComplement(aStr, bStr) {
     const bPadded = bStr.padStart(maxLen, "0");
 
     // Step 1: Find 9's complement of B
-    const ninesComp = [];
-    for (const ch of bPadded) {
-        ninesComp.push(9 - Number(ch));
-    }
-    const ninesCompStr = ninesComp.join("");
+    const ninesCompStr = ninesComplement(bPadded);
+    const ninesComp = ninesCompStr.split("").map(Number);
 
     // Step 2: Add A + 9's complement of B
     const addResult = addBCD(aPadded, ninesCompStr);
@@ -429,17 +457,9 @@ export function subtractBCDUsing10sComplement(aStr, bStr) {
     const bPadded = bStr.padStart(maxLen, "0");
 
     // Step 1: Find 10's complement of B = 9's complement + 1
-    const ninesComp = [];
-    for (const ch of bPadded) {
-        ninesComp.push(9 - Number(ch));
-    }
-    const ninesCompStr = ninesComp.join("");
-
-    // Add 1 to get 10's complement
-    const tensCompResult = addBCD(ninesCompStr, "1".padStart(maxLen, "0"));
-    const tensCompStr = tensCompResult.decimalResult.padStart(maxLen, "0");
-    // If 10's complement overflows (e.g., B = 0 → 10's comp = 10^n), take last maxLen digits
-    const tensCompDisplay = tensCompStr.length > maxLen ? tensCompStr.slice(tensCompStr.length - maxLen) : tensCompStr;
+    const ninesCompStr = ninesComplement(bPadded);
+    const ninesComp = ninesCompStr.split("").map(Number);
+    const tensCompDisplay = tensComplement(bPadded);
 
     // Step 2: Add A + 10's complement of B
     const addResult = addBCD(aPadded, tensCompDisplay);

@@ -289,7 +289,11 @@ function createOperandCards(count) {
 // Update Preview for a Single Card
 // ═══════════════════════════════════════════════════════
 
-function updateCardPreview(card) {
+export function updateOperandCard(card) {
+    updateCardPreview(card);
+}
+
+export function updateCardPreview(card) {
     const input = card.querySelector(".operand-input");
     const preview = card.querySelector(".operand-bcd-preview");
     const validationMsg = card.querySelector(".validation-message");
@@ -348,28 +352,10 @@ function gatherVariableValues() {
 }
 
 // ═══════════════════════════════════════════════════════
-// Perform BCD Calculation & Display Result
+// Build Result UI
 // ═══════════════════════════════════════════════════════
 
-function performCalculation() {
-    const exprText = bcdExpressionInput.value.trim();
-    if (!exprText) {
-        alert("Please enter or construct an arithmetic expression.");
-        bcdExpressionInput.focus();
-        return;
-    }
-
-    const varValues = gatherVariableValues();
-    if (!varValues) return;
-
-    const evalResult = evaluateBCDExpression(exprText, varValues);
-
-    if (evalResult.error) {
-        alert(`Expression Error: ${evalResult.error}`);
-        bcdExpressionInput.focus();
-        return;
-    }
-
+export function buildResultUI(exprText, evalResult) {
     bcdResultContainer.hidden = false;
 
     // Build result HTML
@@ -472,6 +458,32 @@ function performCalculation() {
             }, 60);
         }
     });
+}
+
+// ═══════════════════════════════════════════════════════
+// Perform BCD Calculation & Display Result
+// ═══════════════════════════════════════════════════════
+
+export function performCalculation() {
+    const exprText = bcdExpressionInput.value.trim();
+    if (!exprText) {
+        alert("Please enter or construct an arithmetic expression.");
+        bcdExpressionInput.focus();
+        return;
+    }
+
+    const varValues = gatherVariableValues();
+    if (!varValues) return;
+
+    const evalResult = evaluateBCDExpression(exprText, varValues);
+
+    if (evalResult.error) {
+        alert(`Expression Error: ${evalResult.error}`);
+        bcdExpressionInput.focus();
+        return;
+    }
+
+    buildResultUI(exprText, evalResult);
 
     // Scroll smoothly to result
     scrollToResult();
