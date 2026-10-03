@@ -1,61 +1,8 @@
-# BCD Addition & Subtraction — Core JavaScript Functions & Implementation
+# Core JavaScript Functions
 
-**Project:** BCD Addition & Subtraction (Activity 3 – BCD Arithmetic)  
-**System Module:** `bcd-arithmetic/` (`bcd.js`, `bcd-ui.js`)  
-**Document Purpose:** Detailed technical reference and source code repository for core arithmetic and UI functions.
+## 14.2 Core JavaScript Functions
 
----
-
-## Table of Contents
-1. [14.1 Technology Stack](#141-technology-stack)
-2. [14.2 Core JavaScript Functions (bcd.js)](#142-core-javascript-functions-bcdjs)
-   - [14.2.1 `validateBCDInput(value)`](#1421-validatebcdinputvalue)
-   - [14.2.2 `validateOperandInput(value, base)`](#1422-validateoperandinputvalue-base)
-   - [14.2.3 `digitToBCD(digit)`](#1423-digittobcddigit)
-   - [14.2.4 `decimalToBCD(decimalStr)`](#1424-decimaltobcddecimalstr)
-   - [14.2.5 `addBCD(aStr, bStr)`](#1425-addbcdastr-bstr)
-   - [14.2.6 `addBCDWithSolution(aStr, bStr)`](#1426-addbcdwithsolutionastr-bstr)
-   - [14.2.7 `ninesComplement(decimalStr)`](#1427-ninescomplementdecimalstr)
-   - [14.2.8 `tensComplement(decimalStr)`](#1428-tenscomplementdecimalstr)
-   - [14.2.9 `subtractBCDUsing9sComplement(aStr, bStr)`](#1429-subtractbcdusing9scomplementastr-bstr)
-   - [14.2.10 `subtractBCDUsing10sComplement(aStr, bStr)`](#14210-subtractbcdusing10scomplementastr-bstr)
-   - [14.2.11 `tokenizeBCDExpression(input)`](#14211-tokenizebcdexpressioninput)
-   - [14.2.12 `evaluateBCDExpression(exprStr, varValues)`](#14212-evaluatebcdexpressionexprstr-varvalues)
-3. [14.3 UI Functions (bcd-ui.js)](#143-ui-functions-bcd-uijs)
-   - [14.3.1 `createOperandCards(count)`](#1431-createoperandcardscount)
-   - [14.3.2 `updateVariableButtons(count)`](#1432-updatevariablebuttonscount)
-   - [14.3.3 `updateOperandCard(card)` / `updateCardPreview(card)`](#1433-updateoperandcardcard--updatecardpreviewcard)
-   - [14.3.4 `buildResultUI(exprText, evalResult)`](#1434-buildresultuiexprtext-evalresult)
-   - [14.3.5 `scrollToResult()`](#1435-scrolltoresult)
-   - [14.3.6 `performCalculation()`](#1436-performcalculation)
-
----
-
-## 14.1 Technology Stack
-
-The module uses standard, modern web technologies without third-party runtime frameworks:
-* **HTML5:** Semantic markup, dynamic accessible forms, and structured card grid layouts.
-* **CSS3:** Responsive CSS Grid (`repeat(4, minmax(0, 1fr))`), custom scrollbar animations, and unified color palette.
-* **JavaScript (ES Modules):** Pure client-side arithmetic algorithms, recursive descent expression parser, and reactive DOM event binding.
-* **Execution Environment:** 100% client-side (no backend required; runs directly in modern browsers or static web hosts).
-
----
-
-## 14.2 Core JavaScript Functions (`bcd.js`)
-
-### 14.2.1 `validateBCDInput(value)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Convenience wrapper that validates whether an input string is a valid decimal number (base 10) suitable for BCD conversion.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `value` | `string` | User input string to validate |
-
-**Returns:** `object` — `{ valid, sign, isNegative, digits, bcdString, displayInfo, message }`
-
-#### Source Code
+### `validateBCDInput(value)`
 ```javascript
 /**
  * Validates that the input is a valid decimal number (digits 0-9 only).
@@ -66,23 +13,16 @@ export function validateBCDInput(value) {
 }
 ```
 
----
-
-### 14.2.2 `validateOperandInput(value, base)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Handles dual-base operand validation for **Decimal (Base 10)** and **Binary (Base 2)**. For Base 10, it verifies decimal digits `0–9` and converts them to 8421 BCD nibbles. For Base 2, it detects whether the input is space-separated/4-bit aligned BCD nibbles (each nibble $\le 9$) or standard pure binary, and automatically normalizes it to both Decimal and BCD formats.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `value` | `string` | Raw input string entered in operand card |
-| `base` | `number` | Selected radix: `10` for Decimal, `2` for Binary |
-
-**Returns:** `object` — `{ valid: boolean, sign: string, isNegative: boolean, digits: string, normalizedValue: string, bcdString: string, displayInfo: string, message: string }`
-
-#### Source Code
+### `validateOperandInput(value, base)`
 ```javascript
+/**
+ * Validates operand input based on selected base (10 for Decimal, 2 for Binary).
+ * For base 10: accepts digits 0-9 with optional leading '+' or '-'.
+ * For base 2: accepts binary bits (0 and 1, spaces allowed) with optional sign.
+ *   - Parses BCD nibbles (if 4-bit aligned or spaced, where each nibble <= 9)
+ *   - Or parses standard binary integer and converts to decimal & BCD.
+ * Returns normalized decimal digits, BCD string, and display preview info.
+ */
 export function validateOperandInput(value, base = 10) {
     const trimmed = value.trim();
 
@@ -214,21 +154,7 @@ export function validateOperandInput(value, base = 10) {
 }
 ```
 
----
-
-### 14.2.3 `digitToBCD(digit)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Converts a single decimal digit integer (`0` to `9`) into its corresponding 4-bit Binary-Coded Decimal (8421) representation.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `digit` | `number` | A single decimal digit (0–9) |
-
-**Returns:** `string` — A 4-bit binary string (e.g., `5` $\to$ `"0101"`).
-
-#### Source Code
+### `digitToBCD(digit)`
 ```javascript
 /**
  * Converts a single decimal digit (0-9) to its 4-bit BCD representation.
@@ -238,21 +164,7 @@ export function digitToBCD(digit) {
 }
 ```
 
----
-
-### 14.2.4 `decimalToBCD(decimalStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Converts a multi-digit decimal string into 4-bit BCD nibbles separated by spaces.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `decimalStr` | `string` | Unsigned decimal number string (e.g., `"25"`) |
-
-**Returns:** `object` — `{ groups: Array<{ digit: number, bcd: string }>, bcdString: string }`
-
-#### Source Code
+### `decimalToBCD(decimalStr)`
 ```javascript
 /**
  * Converts a decimal number string to its BCD representation.
@@ -275,26 +187,15 @@ export function decimalToBCD(decimalStr) {
 }
 ```
 
----
-
-### 14.2.5 `addBCD(aStr, bStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Performs BCD addition column-by-column from right to left. If the sum of any 4-bit nibble plus carry exceeds 9 (`rawSum > 9`), it applies the **+6 (`0110_2`) correction** and sets carry-out to `1`.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `aStr` | `string` | Addend A (decimal digit string) |
-| `bStr` | `string` | Addend B (decimal digit string) |
-
-**Returns:** `object` — `{ decimalResult: string, bcdResult: string, carry: number, steps: Array<StepRecord> }`
-
-#### Source Code
+### `addBCD(aStr, bStr)`
 ```javascript
 /**
  * Adds two BCD-encoded decimal numbers digit by digit.
  * Applies +6 correction when a nibble sum exceeds 9.
+ *
+ * @param {string} aStr - First decimal number string
+ * @param {string} bStr - Second decimal number string
+ * @returns {object} - { result, bcdResult, steps, decimalResult }
  */
 export function addBCD(aStr, bStr) {
     // Pad to equal length
@@ -358,23 +259,11 @@ export function addBCD(aStr, bStr) {
 }
 ```
 
----
-
-### 14.2.6 `addBCDWithSolution(aStr, bStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Wrapper around `addBCD()` that generates human-readable step-by-step documentation detailing binary conversions, raw sums, and +6 correction justifications for every column.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `aStr` | `string` | Decimal addend A string |
-| `bStr` | `string` | Decimal addend B string |
-
-**Returns:** `object` — `{ decimalResult: string, bcdResult: string, steps: Array, solution: string }`
-
-#### Source Code
+### `addBCDWithSolution(aStr, bStr)`
 ```javascript
+/**
+ * Performs BCD addition with step-by-step solution.
+ */
 export function addBCDWithSolution(aStr, bStr) {
     const maxLen = Math.max(aStr.length, bStr.length);
     const aPadded = aStr.padStart(maxLen, "0");
@@ -432,22 +321,15 @@ export function addBCDWithSolution(aStr, bStr) {
 }
 ```
 
----
-
-### 14.2.7 `ninesComplement(decimalStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Computes the 9's complement ($r-1$'s complement) of a decimal digit string by subtracting each individual digit from 9.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `decimalStr` | `string` | Decimal digit string |
-
-**Returns:** `string` — The 9's complement string of identical length.
-
-#### Source Code
+### `ninesComplement(decimalStr)`
 ```javascript
+/**
+ * Computes the 9's complement of a decimal digit string.
+ * Subtracts each decimal digit from 9.
+ *
+ * @param {string} decimalStr - String of decimal digits
+ * @returns {string} - 9's complement string
+ */
 export function ninesComplement(decimalStr) {
     const digits = [];
     for (const ch of decimalStr) {
@@ -457,22 +339,15 @@ export function ninesComplement(decimalStr) {
 }
 ```
 
----
-
-### 14.2.8 `tensComplement(decimalStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Computes the 10's complement ($r$'s complement) of a decimal digit string by adding 1 to the 9's complement using BCD addition rules.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `decimalStr` | `string` | Decimal digit string |
-
-**Returns:** `string` — The 10's complement string of identical length.
-
-#### Source Code
+### `tensComplement(decimalStr)`
 ```javascript
+/**
+ * Computes the 10's complement of a decimal digit string.
+ * Adds 1 to the 9's complement using BCD addition rules.
+ *
+ * @param {string} decimalStr - String of decimal digits
+ * @returns {string} - 10's complement string of equal length
+ */
 export function tensComplement(decimalStr) {
     const len = decimalStr.length;
     const nines = ninesComplement(decimalStr);
@@ -483,28 +358,14 @@ export function tensComplement(decimalStr) {
 }
 ```
 
----
-
-### 14.2.9 `subtractBCDUsing9sComplement(aStr, bStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Performs BCD subtraction ($A - B$) using the **9's complement** method:
-  1. Computes the 9's complement of $B$.
-  2. Adds $A$ and the 9's complement of $B$ using BCD addition (+6 correction).
-  3. **End-Around Carry:** If a carry is generated, adds `1` back to the least significant digit $\to$ result is positive ($+$).
-  4. If no carry is generated, takes the 9's complement of the sum $\to$ result is negative ($-$).
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `aStr` | `string` | Minuend $A$ (decimal string) |
-| `bStr` | `string` | Subtrahend $B$ (decimal string) |
-
-**Returns:** `object` — `{ isNegative: boolean, decimalResult: string, bcdResult: string, solution: string }`
-
-#### Source Code
+### `subtractBCDUsing9sComplement(aStr, bStr)`
 ```javascript
+/**
+ * Subtracts two decimal digit strings using 9's complement method.
+ * Returns step-by-step solution.
+ */
 export function subtractBCDUsing9sComplement(aStr, bStr) {
+    // Pad to equal length
     const maxLen = Math.max(aStr.length, bStr.length);
     const aPadded = aStr.padStart(maxLen, "0");
     const bPadded = bStr.padStart(maxLen, "0");
@@ -526,6 +387,7 @@ export function subtractBCDUsing9sComplement(aStr, bStr) {
     lines.push(`Number of BCD digits: ${maxLen}`);
     lines.push("");
 
+    // Step 1: 9's complement
     lines.push("── STEP 1: Find the 9's Complement of B ──");
     lines.push("  Method: Subtract each digit of B from 9.");
     lines.push("");
@@ -537,6 +399,7 @@ export function subtractBCDUsing9sComplement(aStr, bStr) {
     lines.push(`  In BCD: ${decimalToBCD(ninesCompStr).bcdString}`);
     lines.push("");
 
+    // Step 2: Add
     lines.push("── STEP 2: Add A + 9's Complement of B (BCD Addition) ──");
     lines.push(`    ${aPadded}`);
     lines.push(`  + ${ninesCompStr}`);
@@ -602,28 +465,14 @@ export function subtractBCDUsing9sComplement(aStr, bStr) {
 }
 ```
 
----
-
-### 14.2.10 `subtractBCDUsing10sComplement(aStr, bStr)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Performs BCD subtraction ($A - B$) using the **10's complement** method:
-  1. Computes the 10's complement of $B$ (9's complement $+ 1$).
-  2. Adds $A$ and the 10's complement of $B$ using BCD addition (+6 correction).
-  3. **Carry Discard:** If a carry is generated, discards the carry $\to$ result is positive ($+$).
-  4. If no carry is generated, takes the 10's complement of the sum $\to$ result is negative ($-$).
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `aStr` | `string` | Minuend $A$ (decimal string) |
-| `bStr` | `string` | Subtrahend $B$ (decimal string) |
-
-**Returns:** `object` — `{ isNegative: boolean, decimalResult: string, bcdResult: string, solution: string }`
-
-#### Source Code
+### `subtractBCDUsing10sComplement(aStr, bStr)`
 ```javascript
+/**
+ * Subtracts two decimal digit strings using 10's complement method.
+ * Returns step-by-step solution.
+ */
 export function subtractBCDUsing10sComplement(aStr, bStr) {
+    // Pad to equal length
     const maxLen = Math.max(aStr.length, bStr.length);
     const aPadded = aStr.padStart(maxLen, "0");
     const bPadded = bStr.padStart(maxLen, "0");
@@ -753,22 +602,12 @@ export function subtractBCDUsing10sComplement(aStr, bStr) {
 }
 ```
 
----
-
-### 14.2.11 `tokenizeBCDExpression(input)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Lexical scanner that breaks an arithmetic expression string into structured tokens (`VAR`, `OP`, `LPAREN`, `RPAREN`, `NUMBER`). Rejects invalid operators to enforce addition and subtraction operands only.
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `input` | `string` | User expression string (e.g. `"(A + B) − C + D"`) |
-
-**Returns:** `object` — `{ tokens: Array<{ type: string, value: string, pos: number }> }` OR `{ error: string }`
-
-#### Source Code
+### `tokenizeBCDExpression(input)`
 ```javascript
+/**
+ * Tokenizes a custom BCD expression string.
+ * Supports: Variables (A-Z), +, -, parentheses (), and raw numbers.
+ */
 export function tokenizeBCDExpression(input) {
     const tokens = [];
     let i = 0;
@@ -816,23 +655,16 @@ export function tokenizeBCDExpression(input) {
 }
 ```
 
----
-
-### 14.2.12 `evaluateBCDExpression(exprStr, varValues)`
-
-* **Module:** `bcd.js`
-* **Purpose:** Recursive descent expression parser and arithmetic evaluator. Evaluates arbitrary parenthesized expressions containing additions and subtractions using pure BCD arithmetic rules (+6 correction for additions, 9's/10's complement for subtractions).
-
-#### Parameters & Return Value
-| Parameter | Type | Description |
-|:---|:---|:---|
-| `exprStr` | `string` | User expression string |
-| `varValues` | `object` | Key-value dictionary mapping letters to normalized decimal strings `{ A: "25", B: "14", ... }` |
-
-**Returns:** `object` — `{ finalDecimal: string, finalBCD: string, isNegative: boolean, operationResults: Array, fullSolution: string }`
-
-#### Source Code
+### `evaluateBCDExpression(exprStr, varValues)`
 ```javascript
+/**
+ * Evaluates an arbitrary user-defined BCD arithmetic expression using a
+ * recursive descent parser. Performs step-by-step BCD addition and subtraction
+ * (using both 9's and 10's complement), and returns comprehensive step records.
+ *
+ * @param {string} exprStr - Custom expression string (e.g. "(A + B) - C + D")
+ * @param {object} varValues - Map of variable letters to decimal digit strings { A: "25", B: "18", ... }
+ */
 export function evaluateBCDExpression(exprStr, varValues) {
     const tRes = tokenizeBCDExpression(exprStr);
     if (tRes.error) return tRes;
@@ -966,14 +798,9 @@ export function evaluateBCDExpression(exprStr, varValues) {
 
 ---
 
-## 14.3 UI Functions (`bcd-ui.js`)
+## 14.3 UI Functions
 
-### 14.3.1 `createOperandCards(count)`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Dynamically constructs $N$ operand input cards ($N \in [2, 10]$) arranged in a 4-by-row CSS grid. Labels each card alphabetically (`Operand A`, `Operand B`, ...), mounts dual-base toggles (`10 Dec` / `2 Bin`), and synchronizes the expression input.
-
-#### Source Code
+### `createOperandCards(count)`
 ```javascript
 export function createOperandCards(count) {
     bcdOperandsContainer.replaceChildren();
@@ -1131,14 +958,7 @@ export function createOperandCards(count) {
 }
 ```
 
----
-
-### 14.3.2 `updateVariableButtons(count)`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Generates interactive variable badges in the expression toolbar (`[ A: — ]`, `[ B: — ]`, ...) corresponding to the active operand count. Clicking inserts the variable at the caret position in the expression input.
-
-#### Source Code
+### `updateVariableButtons(count)`
 ```javascript
 export function updateVariableButtons(count) {
     if (!bcdVariableButtons) return;
@@ -1173,14 +993,7 @@ export function updateVariableButtons(count) {
 }
 ```
 
----
-
-### 14.3.3 `updateOperandCard(card)` / `updateCardPreview(card)`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Validates the operand input field in real time, displays immediate BCD/decimal feedback, updates validation status messages, and updates toolbar badge preview values.
-
-#### Source Code
+### `updateOperandCard(card)` / `updateCardPreview(card)`
 ```javascript
 export function updateOperandCard(card) {
     updateCardPreview(card);
@@ -1215,14 +1028,7 @@ export function updateCardPreview(card) {
 }
 ```
 
----
-
-### 14.3.4 `buildResultUI(exprText, evalResult)`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Assembles and renders the complete result presentation DOM, including the final answer in Decimal & 8421 BCD, individual operation cards for each step (with both 9's and 10's complement cards for subtractions and +6 correction cards for additions), and the collapsible step-by-step solution accordion.
-
-#### Source Code
+### `buildResultUI(exprText, evalResult)`
 ```javascript
 export function buildResultUI(exprText, evalResult) {
     bcdResultContainer.hidden = false;
@@ -1330,15 +1136,12 @@ export function buildResultUI(exprText, evalResult) {
 }
 ```
 
----
-
-### 14.3.5 `scrollToResult()`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Smoothly scrolls the viewport to the result section and triggers a CSS highlight-pulse animation for clear visual feedback.
-
-#### Source Code
+### `scrollToResult()`
 ```javascript
+/**
+ * Smoothly scrolls the window to the result container
+ * with a pulse animation for visual feedback.
+ */
 export function scrollToResult() {
     if (!bcdResultContainer || bcdResultContainer.hidden) return;
 
@@ -1350,26 +1153,14 @@ export function scrollToResult() {
             });
 
             bcdResultContainer.classList.remove("highlight-pulse");
-            void bcdResultContainer.offsetWidth; // Force CSS reflow
+            void bcdResultContainer.offsetWidth;
             bcdResultContainer.classList.add("highlight-pulse");
         }, 50);
     });
 }
 ```
 
----
-
-### 14.3.6 `performCalculation()`
-
-* **Module:** `bcd-ui.js`
-* **Purpose:** Orchestrates the calculation workflow when the user clicks "Perform BCD Operation" or presses <kbd>Enter</kbd>:
-  1. Validates non-empty arithmetic expression.
-  2. Gathers and validates all operand inputs from active cards.
-  3. Evaluates expression via `evaluateBCDExpression()`.
-  4. Delegates rendering to `buildResultUI()`.
-  5. Executes smooth scroll to result container via `scrollToResult()`.
-
-#### Source Code
+### `performCalculation()`
 ```javascript
 export function performCalculation() {
     const exprText = bcdExpressionInput.value.trim();
