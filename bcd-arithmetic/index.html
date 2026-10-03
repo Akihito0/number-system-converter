@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BCD Addition & Subtraction</title>
+
+    <link rel="stylesheet" href="./bcd.css">
+</head>
+<body>
+
+    <main class="app-container">
+
+        <header class="header-container">
+            <h1>BCD Addition & Subtraction</h1>
+            <p>Perform BCD arithmetic using 9's and 10's complement methods.</p>
+            <div class="header-nav-links">
+                <a href="../index.html" class="header-nav-link">
+                    <span class="nav-arrow">←</span> Back to Number System Converter
+                </a>
+                <a href="../complement/index.html" class="header-nav-link">
+                    <span class="nav-arrow">←</span> Back to Complements
+                </a>
+            </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- CONTROLS -->
+        <!-- ═══════════════════════════════════════════════════ -->
+
+        <section class="controls-container">
+            <div class="control-group">
+                <label for="bcdInputCount">
+                    Number of input operands:
+                </label>
+                <input
+                    type="number"
+                    id="bcdInputCount"
+                    min="2"
+                    max="10"
+                    value="4"
+                >
+            </div>
+
+            <button id="bcdSetInputsButton" type="button">
+                Set Inputs
+            </button>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- ARITHMETIC EXPRESSION BUILDER -->
+        <!-- ═══════════════════════════════════════════════════ -->
+
+        <section class="expression-container" id="bcdExpressionContainer">
+            <div class="expression-header">
+                <h2>Arithmetic Expression</h2>
+                <p>Build expressions with variables, operators, and parentheses: e.g. (A + B - C) + D</p>
+            </div>
+
+            <div class="expression-toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Variables:</span>
+                    <div id="bcdVariableButtons" class="btn-group"></div>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Operators:</span>
+                    <div class="btn-group">
+                        <button type="button" class="btn-expr" data-insert="+">+</button>
+                        <button type="button" class="btn-expr" data-insert="-">−</button>
+                        <button type="button" class="btn-expr" data-insert="(">(</button>
+                        <button type="button" class="btn-expr" data-insert=")">)</button>
+                        <button type="button" class="btn-expr btn-clear" id="bcdClearExpressionButton">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expression-input-row">
+                <label for="bcdExpressionInput">Enter Expression:</label>
+                <input
+                    type="text"
+                    id="bcdExpressionInput"
+                    placeholder="e.g. (A + B - C) + D"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+
+            <div class="expression-action-row">
+                <button id="bcdPerformArithmeticButton" type="button" class="btn-perform-op">
+                    <span class="equal-icon">=</span>
+                    <span>Perform BCD Operation</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- OPERANDS INPUT GRID (4 PER ROW) -->
+        <!-- ═══════════════════════════════════════════════════ -->
+
+        <section
+            id="bcdOperandsContainer"
+            class="bcd-operands-grid">
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- RESULT CONTAINER -->
+        <!-- ═══════════════════════════════════════════════════ -->
+
+        <section
+            id="bcdResultContainer"
+            class="bcd-result-container"
+            hidden>
+        </section>
+
+    </main>
+
+    <script type="module" src="./bcd-ui.js"></script>
+</body>
+</html>

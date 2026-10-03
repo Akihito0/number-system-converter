@@ -79,6 +79,13 @@ body {
     font-weight: 800;
 }
 
+.header-nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 /* ── Tab Bar ── */
 .tab-bar {
     display: flex;
